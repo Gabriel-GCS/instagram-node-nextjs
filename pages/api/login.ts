@@ -21,7 +21,7 @@ const endpointLogin = async (req : NextApiRequest, res : NextApiResponse <respos
         if(usuariosEncontrados && usuariosEncontrados.length > 0){
             const usuarioLogado = usuariosEncontrados[0]
 
-            const token = jwt.sign({_id : usuarioLogado._id}, MINHA_CHAVE_JWT);
+            const token = jwt.sign({_id : usuarioLogado._id}, MINHA_CHAVE_JWT as string);
 
             return res.status(200).json({
                 nome : usuarioLogado.nome,

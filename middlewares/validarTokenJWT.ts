@@ -22,12 +22,12 @@ export const validarTokenJWT = (handler : NextApiHandler) => (
             res.status(401).json({erro : 'Nao esta autenticado'})
         }
 
-        const token = authorization.substring(7);
+        const token = authorization?.substring(7);
         if(!token){
             res.status(401).json({erro : 'Nao esta autenticado'})
         }
 
-        const decodificado = jwt.verify(token, MINHA_CHAVE_JWT) as JwtPayload;
+        const decodificado = jwt.verify(token as string, MINHA_CHAVE_JWT as string) as JwtPayload;
         if(!decodificado){
             res.status(401).json({erro : 'Nao esta autenticado'})
         }
