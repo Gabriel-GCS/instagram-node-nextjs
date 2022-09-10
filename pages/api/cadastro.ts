@@ -10,7 +10,8 @@ import nc from 'next-connect';
 const handler = nc()
     .use(upload.single('file'))
     .post(async (req : NextApiRequest, res : NextApiResponse <respostaPadraoMsg>) => {
-        const usuario = req.body as CadastroRequisicao;
+        try {
+            const usuario = req.body as CadastroRequisicao;
     
         if(!usuario.nome || usuario.nome.length < 2){
             res.status(400).json({erro : 'Nome invalido'});
@@ -45,7 +46,12 @@ const handler = nc()
         }
         await UsuarioModel.create(UsuarioASerSalvo);
         return res.status(200).json({msg: 'Usuario criado com sucesso'});
- });
+        } catch (e) {
+            console.log(e);
+            return res.status(500).json({erro: 'Erro ao cadastrar'});
+        }
+        
+});
 
 export const config = {
     api : {
