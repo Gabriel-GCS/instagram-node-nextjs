@@ -14,18 +14,18 @@ const handler = nc()
             const usuario = req.body as CadastroRequisicao;
     
         if(!usuario.nome || usuario.nome.length < 2){
-            res.status(400).json({erro : 'Nome invalido'});
+             return res.status(400).json({erro : 'Nome invalido'});
         }
 
         if(!usuario.email 
             || usuario.email.length < 5
             || !usuario.email.includes('@')
             || !usuario.email.includes('.')){
-            res.status(400).json({erro : 'Email invalido'});
+            return res.status(400).json({erro : 'Email invalido'});
         }
 
         if(!usuario.senha || usuario.senha.length < 4){
-            res.status(400).json({erro : 'Senha invalido'});
+            return res.status(400).json({erro : 'Senha invalido'});
         }
 
         // Verificar se existe dois usuarios iguais

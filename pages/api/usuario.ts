@@ -13,7 +13,7 @@ const handler = dc()
             const{userId} = req?.query;
             const usuario = await UsuarioModel.findById(userId);
             if(!usuario){
-                res.status(400).json({erro : 'Usuario nao encontrado'});
+                return res.status(400).json({erro : 'Usuario nao encontrado'});
             }
 
             const {nome} = req.body;
@@ -32,12 +32,12 @@ const handler = dc()
             }
 
             await UsuarioModel.findByIdAndUpdate({_id : usuario._id}, usuario);
-            res.status(200).json({msg : 'Usuario alterado com sucesso'});
+            return res.status(200).json({msg : 'Usuario alterado com sucesso'});
 
 
         } catch (error) {
             console.log(error)
-                 res.status(400).json({erro : 'Nao foi possivel alterar o usuario'});
+                return res.status(400).json({erro : 'Nao foi possivel alterar o usuario'});
         }
     })
     .get(async (req : NextApiRequest, res : NextApiResponse <respostaPadraoMsg | any>) =>{
@@ -46,14 +46,12 @@ const handler = dc()
             const usuario = await UsuarioModel.findById(userId);
             usuario.senha = null;
             return res.status(200).json(usuario);
-    
-    
-            
+
         } catch (e) {
             console.log(e);
-            res.status(400).json({erro : 'Nao foi possivel obter as informacoes do usuario'})
+            return res.status(400).json({erro : 'Nao foi possivel obter as informacoes do usuario'})
         }
-        return res.status(200).json({msg : 'Usuario autenticado'});
+
     
     });
 

@@ -11,7 +11,7 @@ const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse <resp
             if(req?.query?.id){
                 const usuarioEncontrado = await UsuarioModel.findById(req.query.id);
                 if(!usuarioEncontrado){
-                    res.status(400).json({erro : 'Usuario nao encontrado'});
+                    return res.status(400).json({erro : 'Usuario nao encontrado'});
                 }
                 usuarioEncontrado.senha = null;
                 return res.status(200).json(usuarioEncontrado);
@@ -19,7 +19,7 @@ const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse <resp
             else{
                 const {filtro} = req.query;
                 if(!filtro || filtro.length < 2){
-                    res.status(400).json({erro : 'Nao foi possivel pesquisar o usuario'});
+                    return res.status(400).json({erro : 'Nao foi possivel pesquisar o usuario'});
                 }
                 const usuariosEncontrados = await UsuarioModel.find({
                     $or : [{nome : {$regex : filtro, $options : 'i'}}, 
@@ -33,7 +33,7 @@ const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse <resp
         return res.status(405).json({erro : 'Metodo informado invalido'});
     } catch (error) { 
         console.log(error);
-        res.status(400).json({erro : 'Nao foi possivel pesquisar o Usuario'});
+       return res.status(400).json({erro : 'Nao foi possivel pesquisar o Usuario'});
     };
 };
 

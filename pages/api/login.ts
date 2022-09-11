@@ -11,7 +11,7 @@ const endpointLogin = async (req : NextApiRequest, res : NextApiResponse <respos
     const {MINHA_CHAVE_JWT} = process.env;
 
     if(!MINHA_CHAVE_JWT){
-        res.status(500).json({erro : 'ENV jwt nao informado'});
+        return res.status(500).json({erro : 'ENV jwt nao informado'});
     }
 
     if(req.method === 'POST'){
