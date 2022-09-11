@@ -7,26 +7,32 @@ import { respostaPadraoMsg } from "../../types/respostaPadraoMsg";
 const pesquisaEndPoint = async(req : NextApiRequest, res : NextApiResponse <respostaPadraoMsg | any[]>) => {
     try {
         if(req.method === 'GET'){
-            
-            const {filtro} = req.query;
 
-            if(!filtro || filtro.length < 2){
-                res.status(400).json({erro : 'Nao foi possivel pesquisar o usuario'})
+            if(req?.query?.id){
+                const usuarioEncontrado = await UsuarioModel.findById(req.query.id);
+                if(!usuarioEncontrado){
+                    res.status(400).json({erro : 'Usuario nao encontrado'});
+                }
+                usuarioEncontrado.senha = null;
+                return res.status(200).json(usuarioEncontrado);
             }
-
-            const usuariosEncontrados = await UsuarioModel.find({
-                $or : [{nome : {$regex : filtro, $options : 'i'}}, 
-                {email : {$regex : filtro, $options : 'i'}}]
-            });
-
-            return res.status(200).json(usuariosEncontrados)
-
-        }
-        return res.status(405).json({erro : 'Metodo informado invalido'})
+            else{
+                const {filtro} = req.query;
+                if(!filtro || filtro.length < 2){
+                    res.status(400).json({erro : 'Nao foi possivel pesquisar o usuario'});
+                }
+                const usuariosEncontrados = await UsuarioModel.find({
+                    $or : [{nome : {$regex : filtro, $options : 'i'}}, 
+                    {email : {$regex : filtro, $options : 'i'}}]
+                });
+                return res.status(200).json(usuariosEncontrados)
+            };
+        };
+        return res.status(405).json({erro : 'Metodo informado invalido'});
     } catch (error) { 
         console.log(error);
-        res.status(400).json({erro : 'Nao foi possivel pesquisar o Usuario'})
-    }
-}
+        res.status(400).json({erro : 'Nao foi possivel pesquisar o Usuario'});
+    };
+};
 
 export default validarTokenJWT(conectarMongoDB(pesquisaEndPoint));

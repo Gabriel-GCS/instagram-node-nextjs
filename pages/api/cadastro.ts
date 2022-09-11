@@ -31,9 +31,8 @@ const handler = nc()
         // Verificar se existe dois usuarios iguais
         const usuariosComMesmoEmail = await UsuarioModel.find({email : usuario.email});
         if(usuariosComMesmoEmail && usuariosComMesmoEmail.length > 0){
-            res.status(400).json({erro : 'Email ja cadastrado'});
+            return res.status(400).json({erro : 'Email ja cadastrado'});
         }
-
         // enviar a imagem do multer para o cosmic
         const image = await uploadImagemCosmic(req);
 
