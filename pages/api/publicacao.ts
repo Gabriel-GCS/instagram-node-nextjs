@@ -43,7 +43,6 @@ const handler = nc()
     
             return res.status(200).json({msg : 'Publicacao criada'})
     
-            
         } catch (e) {
             console.log(e);
             res.status(400).json({erro : 'Nao foi possivel publicar'})
